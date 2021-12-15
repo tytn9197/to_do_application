@@ -1,16 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:to_do_list/src/utils/constants/constants.dart';
+import 'package:to_do_list/src/domain/entities/task.dart';
+import 'package:to_do_list/src/utils/constants/colors.dart';
 import 'package:sizer/sizer.dart';
 
 class TaskWidget extends StatefulWidget {
-  //is check box cheked
-  final bool isCompleted;
+  //receiving task from list.builder in home_view
+  final Task task;
 
-  //the content of the check box
-  final String text;
-
-  const TaskWidget({Key? key, required this.isCompleted, required this.text})
+  const TaskWidget({Key? key, required this.task})
       : super(key: key);
 
   @override
@@ -18,26 +16,16 @@ class TaskWidget extends StatefulWidget {
 }
 
 class _TaskWidgetState extends State<TaskWidget> {
-  bool isCompleted = false;
-  String text = '';
-
-  @override
-  void initState() {
-    super.initState();
-    this.isCompleted = widget.isCompleted;
-    this.text = widget.text;
-  }
-
   @override
   Widget build(BuildContext context) {
     onTaskTap() {
       setState(() {
-        isCompleted = !isCompleted;
+        widget.task.isCompleted = !widget.task.isCompleted;
       });
     }
 
     BoxDecoration taskBoxDecoration = BoxDecoration(
-        border: Border.all(color: isCompleted ? kCheckBoxColor : Colors.white),
+        border: Border.all(color: widget.task.isCompleted ? kCheckBoxColor : Colors.white),
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
@@ -52,7 +40,7 @@ class _TaskWidgetState extends State<TaskWidget> {
     Widget renderCheckBox() {
       return Container(
           padding: EdgeInsets.all(2.w),
-          child: isCompleted
+          child: widget.task.isCompleted
               ? Icon(
                   Icons.check_box,
                   color: kCheckBoxColor,
@@ -76,7 +64,7 @@ class _TaskWidgetState extends State<TaskWidget> {
               renderCheckBox(),
               Expanded(
                 child: Text(
-                  '$text',
+                  '${widget.task.text}',
                   overflow: TextOverflow.ellipsis,
                   maxLines: 3,
                   style: TextStyle(color: Colors.black, fontSize: 2.h, fontFamily: 'IBM'),

@@ -1,12 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:to_do_list/src/data/tasks.dart';
-import 'package:to_do_list/src/domain/entities/task.dart';
 import 'package:to_do_list/src/presentation/blocs/bottom_navigation/bottom_nav_cubit.dart';
-import 'package:to_do_list/src/presentation/blocs/bottom_navigation/constants/bottom_nav_items.dart';
 import 'package:to_do_list/src/presentation/widgets/bottom_nav_widget.dart';
-import 'package:to_do_list/src/presentation/widgets/tasks_list_widget.dart';
+import 'package:to_do_list/src/presentation/widgets/task_widget.dart';
 import 'package:to_do_list/src/utils/constants/colors.dart';
 import 'package:sizer/sizer.dart';
 
@@ -24,10 +21,10 @@ class _HomeViewState extends State<HomeView> {
       backgroundColor: kPrimaryColor,
       body: Center(
           child: Column(children: [
-              header(),
-              bodyContent(),
-        ],
-      )),
+            header(),
+            bodyContent(),
+          ],
+          )),
       //extend the body below a bottom navigation bar
       extendBody: true,
       bottomNavigationBar: BottomNavWidget(),
@@ -63,8 +60,10 @@ class _HomeViewState extends State<HomeView> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
+                    Icon(Icons.playlist_add_rounded,
+                        color: Colors.white, size: 3.5.h),
                     Padding(
-                      padding: EdgeInsets.only(right: 1.w),
+                      padding: EdgeInsets.only(left: 1.w),
                       child: Text(
                         'Create',
                         style: TextStyle(
@@ -73,21 +72,24 @@ class _HomeViewState extends State<HomeView> {
                             fontWeight: FontWeight.bold),
                       ),
                     ),
-                    Icon(Icons.playlist_add_rounded,
-                        color: Colors.white, size: 3.5.h),
                   ],
                 ))),
         // list of tasks
-        BlocBuilder<BottomNavCubit, BottomNavState>(builder: (context, state) {
-          if (state.items == BottomNavItems.complete) {
-            return TasksList(tasks: state.tasks);
-          } else if (state.items == BottomNavItems.incomplete) {
-            return TasksList(tasks: state.tasks);
-          }
-
-          //default return all tasks
-          return TasksList(tasks: state.tasks);
-        }),
+        BlocBuilder<BottomNavCubit, BottomNavState>(
+          builder: (context, state) {
+            return Container(
+              height: 65.h,
+              child: ListView.builder(
+                itemCount: state.tasks.length,
+                itemBuilder: (context, index) {
+                  return TaskWidget(
+                    task: state.tasks[index],
+                  );
+                },
+              ),
+            );
+          },
+        )
       ],
     );
   }
@@ -115,7 +117,7 @@ class _HomeViewState extends State<HomeView> {
                         fontFamily: 'Butler',
                         color: kTitleTextColor),
                   ),
-        ))),
+                ))),
       ],
     );
   }

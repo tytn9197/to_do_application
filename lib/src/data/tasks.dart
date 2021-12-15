@@ -1,7 +1,7 @@
 import '../domain/entities/task.dart';
 
 //mock data for Tasks
-const List<Task> Tasks = [
+List<Task> Tasks = [
   Task(1, 'Do exercise', false),
   Task(2, 'Do homework', true),
   Task(3, 'Do housework', false),

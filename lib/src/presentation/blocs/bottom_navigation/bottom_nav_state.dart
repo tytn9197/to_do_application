@@ -2,12 +2,14 @@ part of 'bottom_nav_cubit.dart';
 
 class BottomNavState extends Equatable {
   //Bottom navigation name
-  final BottomNavItems items;
+  BottomNavItems items;
   //Bottom navigation index
-  final int index;
+  int index;
+  //list of Tasks
+  List<Task> tasks;
 
-  const BottomNavState(this.items, this.index);
+  BottomNavState(this.items, this.index, this.tasks);
 
   @override
-  List<Object> get props => [items, index];
+  List<Object> get props => [items, index, tasks];
 }
