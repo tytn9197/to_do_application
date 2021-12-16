@@ -3,9 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:to_do_list/src/presentation/blocs/bottom_navigation/bottom_nav_cubit.dart';
 import 'package:to_do_list/src/presentation/widgets/bottom_nav_widget.dart';
+import 'package:to_do_list/src/presentation/widgets/button_widget.dart';
 import 'package:to_do_list/src/presentation/widgets/task_widget.dart';
 import 'package:to_do_list/src/utils/constants/colors.dart';
 import 'package:sizer/sizer.dart';
+import 'package:to_do_list/src/utils/constants/styles.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({Key? key}) : super(key: key);
@@ -31,49 +33,54 @@ class _HomeViewState extends State<HomeView> {
     );
   }
 
-  BoxDecoration buttonBoxDecoration = BoxDecoration(
-      border: Border.all(color: Colors.white),
-      borderRadius: BorderRadius.circular(15),
-      boxShadow: [
-        BoxShadow(
-          color: kShadowColor,
-          spreadRadius: 2,
-          blurRadius: 5,
-          offset: Offset(0, 3), // changes position of shadow
+  onCreateNewTask () {
+    Navigator.of(context).restorablePush(_dialogBuilder);
+  }
+  static Route<Object?> _dialogBuilder(
+      BuildContext context, Object? arguments) {
+    return DialogRoute<void>(
+      context: context,
+      builder: (BuildContext context) =>
+      AlertDialog(
+        content: Container(
+          height: 30.h,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Text("New task", style: kTitleStyle,),
+              TextField(
+                decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    hintText: 'Enter your task'
+                ),
+              ),
+              ButtonWidget(
+                text: 'JUST DO IT!',
+                width: 100.w,
+                height: 6.h,
+                margin: EdgeInsets.symmetric(horizontal: 10.w),
+                icon: Icons.arrow_right_alt,
+                onPress: (){print('pressed');},
+              ),
+            ],
+          ),
         ),
-      ],
-      color: kButtonColor);
-
+      ),
+    );
+  }
   Widget bodyContent() {
     return Column(
       children: [
-        //create button
-        Container(
-            width: 100.w,
-            height: 8.h,
-            margin: EdgeInsets.symmetric(horizontal: 6.w),
-            decoration: buttonBoxDecoration,
-            child: TextButton(
-                style: TextButton.styleFrom(alignment: Alignment.center),
-                onPressed: () {},
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Icon(Icons.playlist_add_rounded,
-                        color: Colors.white, size: 3.5.h),
-                    Padding(
-                      padding: EdgeInsets.only(left: 1.w),
-                      child: Text(
-                        'Create',
-                        style: TextStyle(
-                            fontSize: 2.5.h,
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                  ],
-                ))),
+        //button CREATE
+        ButtonWidget(
+          text: 'Create',
+          width: 100.w,
+          height: 8.h,
+          margin: EdgeInsets.symmetric(horizontal: 6.w),
+          icon: Icons.playlist_add_rounded,
+          onPress: onCreateNewTask,
+        ),
         // list of tasks
         BlocBuilder<BottomNavCubit, BottomNavState>(
           builder: (context, state) {
@@ -111,11 +118,7 @@ class _HomeViewState extends State<HomeView> {
                   margin: EdgeInsets.only(top: 1.h),
                   child: Text(
                     'ToDoApp',
-                    style: TextStyle(
-                        fontSize: 4.h,
-                        fontWeight: FontWeight.bold,
-                        fontFamily: 'Butler',
-                        color: kTitleTextColor),
+                    style: kTitleStyle,
                   ),
                 ))),
       ],
