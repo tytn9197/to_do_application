@@ -3,14 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:to_do_list/src/presentation/blocs/bottom_navigation/bottom_nav_cubit.dart';
 import 'package:to_do_list/src/presentation/blocs/bottom_navigation/constants/bottom_nav_items.dart';
 
-class BottomNavWidget extends StatefulWidget {
-  const BottomNavWidget({Key? key}) : super(key: key);
+class BottomNavWidget extends StatelessWidget {
+  BottomNavWidget({Key? key}) : super(key: key);
 
-  @override
-  _BottomNavWidgetState createState() => _BottomNavWidgetState();
-}
-
-class _BottomNavWidgetState extends State<BottomNavWidget> {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<BottomNavCubit, BottomNavState>(
@@ -26,7 +21,18 @@ class _BottomNavWidgetState extends State<BottomNavWidget> {
             selectedItemColor: Colors.black,
             showUnselectedLabels: true,
             currentIndex: state.index,
-            onTap: onBottomNavTab,
+            onTap: (index) {
+              if (index == 0) {
+                BlocProvider.of<BottomNavCubit>(context)
+                    .setBottomNavItem(BottomNavItems.all);
+              } else if (index == 1) {
+                BlocProvider.of<BottomNavCubit>(context)
+                    .setBottomNavItem(BottomNavItems.complete);
+              } else if (index == 2) {
+                BlocProvider.of<BottomNavCubit>(context)
+                    .setBottomNavItem(BottomNavItems.incomplete);
+              }
+            },
           ),
         );
       },
@@ -47,17 +53,4 @@ class _BottomNavWidgetState extends State<BottomNavWidget> {
         label: 'Incomplete'
     )
   ];
-
-  onBottomNavTab(index) {
-    if (index == 0) {
-      BlocProvider.of<BottomNavCubit>(context)
-          .setBottomNavItem(BottomNavItems.all);
-    } else if (index == 1) {
-      BlocProvider.of<BottomNavCubit>(context)
-          .setBottomNavItem(BottomNavItems.complete);
-    } else if (index == 2) {
-      BlocProvider.of<BottomNavCubit>(context)
-          .setBottomNavItem(BottomNavItems.incomplete);
-    }
-  }
 }

@@ -20,6 +20,7 @@ class _HomeViewState extends State<HomeView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       backgroundColor: kPrimaryColor,
       body: Center(
           child: Column(children: [
@@ -34,10 +35,15 @@ class _HomeViewState extends State<HomeView> {
   }
 
   onCreateNewTask () {
+    //open dialog to create new task
     Navigator.of(context).restorablePush(_dialogBuilder);
   }
+
   static Route<Object?> _dialogBuilder(
       BuildContext context, Object? arguments) {
+    //get text from text field of creating new task
+    final txtTaskController = TextEditingController();
+
     return DialogRoute<void>(
       context: context,
       builder: (BuildContext context) =>
@@ -50,6 +56,8 @@ class _HomeViewState extends State<HomeView> {
             children: [
               Text("New task", style: kTitleStyle,),
               TextField(
+                controller: txtTaskController,
+                maxLength: 50,
                 decoration: const InputDecoration(
                     border: OutlineInputBorder(),
                     hintText: 'Enter your task'
@@ -61,7 +69,10 @@ class _HomeViewState extends State<HomeView> {
                 height: 6.h,
                 margin: EdgeInsets.symmetric(horizontal: 10.w),
                 icon: Icons.arrow_right_alt,
-                onPress: (){print('pressed');},
+                onPress: (){
+                  print('${txtTaskController.text}');
+                  Navigator.pop(context, 'Cancel');
+                },
               ),
             ],
           ),
