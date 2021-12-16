@@ -5,7 +5,10 @@ import 'package:to_do_list/src/presentation/blocs/bottom_navigation/constants/bo
 import 'package:to_do_list/src/presentation/blocs/task_list/task_list_cubit.dart';
 
 class BottomNavWidget extends StatelessWidget {
-  BottomNavWidget({Key? key}) : super(key: key);
+  //to know current index of bottom navigation
+  final Function(int) getIndex;
+
+  BottomNavWidget({Key? key, required this.getIndex}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -23,6 +26,7 @@ class BottomNavWidget extends StatelessWidget {
             showUnselectedLabels: true,
             currentIndex: state.index,
             onTap: (index) {
+              this.getIndex(index);
               if (index == 0) {
                 BlocProvider.of<BottomNavCubit>(context)
                     .setBottomNavItem(BottomNavItems.all);

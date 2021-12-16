@@ -6,8 +6,9 @@ import 'package:sizer/sizer.dart';
 class TaskWidget extends StatefulWidget {
   //receiving task from list.builder in home_view
   final Task task;
+  final Function() onTaskTap;
 
-  const TaskWidget({Key? key, required this.task})
+  const TaskWidget({Key? key, required this.task, required this.onTaskTap})
       : super(key: key);
 
   @override
@@ -17,12 +18,6 @@ class TaskWidget extends StatefulWidget {
 class _TaskWidgetState extends State<TaskWidget> {
   @override
   Widget build(BuildContext context) {
-    onTaskTap() {
-      setState(() {
-        widget.task.isCompleted = !widget.task.isCompleted;
-      });
-    }
-
     BoxDecoration taskBoxDecoration = BoxDecoration(
         border: Border.all(color: widget.task.isCompleted ? kCheckBoxColor : Colors.white),
         borderRadius: BorderRadius.circular(20),
@@ -52,7 +47,7 @@ class _TaskWidgetState extends State<TaskWidget> {
     }
 
     return GestureDetector(
-      onTap: onTaskTap,
+      onTap: widget.onTaskTap,
       child: Container(
         margin: EdgeInsets.symmetric(vertical: 1.h, horizontal: 6.w),
         padding: EdgeInsets.all(1.w),

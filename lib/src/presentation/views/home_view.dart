@@ -21,11 +21,15 @@ class _HomeViewState extends State<HomeView> {
   //for loading page
   bool isLoading = true;
 
+  //current index of bottom navigation
+  int currentIndex = 0;
+
   @override
   void initState() {
     super.initState();
     initData();
   }
+
   void initData() async{
     BlocProvider.of<TaskListCubit>(context)
         .getAllTasks();
@@ -52,7 +56,7 @@ class _HomeViewState extends State<HomeView> {
           )),
       //extend the body below a bottom navigation bar
       extendBody: true,
-      bottomNavigationBar: BottomNavWidget(),
+      bottomNavigationBar: BottomNavWidget(getIndex: (i) => currentIndex = i,),
     );
   }
 
@@ -78,11 +82,27 @@ class _HomeViewState extends State<HomeView> {
           builder: (context, state) {
             return Container(
               height: 65.h,
-              child: ListView.builder(
+              child: state.tasks.length == 0?
+              Center(child: Image(
+                image: AssetImage('assets/images/empty_list.png'),
+                width: 70.w,
+              )) :
+              ListView.builder(
                 itemCount: state.tasks.length,
                 itemBuilder: (context, index) {
                   return TaskWidget(
                     task: state.tasks[index],
+                    onTaskTap: () {
+                      state.tasks[index].isCompleted = !state.tasks[index].isCompleted;
+
+                      //"All" tab won't re-render
+                      if(currentIndex != 0){
+                        state.tasks.remove(state.tasks[index]);
+                      }
+
+                      //to refresh the list
+                      setState(() {});
+                      },
                   );
                 },
               ),

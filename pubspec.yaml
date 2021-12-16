@@ -40,7 +40,7 @@ flutter:
 
   # Assets
   assets:
-    - assets/images/header.png
+    - assets/images/
   # Fonts
   fonts:
     - family: Butler
