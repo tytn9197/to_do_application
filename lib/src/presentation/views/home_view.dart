@@ -1,9 +1,10 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:to_do_list/src/presentation/blocs/bottom_navigation/bottom_nav_cubit.dart';
+import 'package:to_do_list/src/presentation/blocs/task_list/task_list_cubit.dart';
 import 'package:to_do_list/src/presentation/widgets/bottom_nav_widget.dart';
 import 'package:to_do_list/src/presentation/widgets/button_widget.dart';
+import 'package:to_do_list/src/presentation/widgets/loading_widget.dart';
+import 'package:to_do_list/src/presentation/widgets/task_dialog_widget.dart';
 import 'package:to_do_list/src/presentation/widgets/task_widget.dart';
 import 'package:to_do_list/src/utils/constants/colors.dart';
 import 'package:sizer/sizer.dart';
@@ -17,9 +18,30 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
+  //for loading page
+  bool isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    initData();
+  }
+  void initData() async{
+    BlocProvider.of<TaskListCubit>(context)
+        .getAllTasks();
+    await Future.delayed(Duration(milliseconds: 1500));
+    setState(() {
+      isLoading = false;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return isLoading?
+    //loading page with circle spinkit
+    LoadingWidget()
+        :
+    Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: kPrimaryColor,
       body: Center(
@@ -36,50 +58,9 @@ class _HomeViewState extends State<HomeView> {
 
   onCreateNewTask () {
     //open dialog to create new task
-    Navigator.of(context).restorablePush(_dialogBuilder);
+    showAlertDialog(context);
   }
 
-  static Route<Object?> _dialogBuilder(
-      BuildContext context, Object? arguments) {
-    //get text from text field of creating new task
-    final txtTaskController = TextEditingController();
-
-    return DialogRoute<void>(
-      context: context,
-      builder: (BuildContext context) =>
-      AlertDialog(
-        content: Container(
-          height: 30.h,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Text("New task", style: kTitleStyle,),
-              TextField(
-                controller: txtTaskController,
-                maxLength: 50,
-                decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    hintText: 'Enter your task'
-                ),
-              ),
-              ButtonWidget(
-                text: 'JUST DO IT!',
-                width: 100.w,
-                height: 6.h,
-                margin: EdgeInsets.symmetric(horizontal: 10.w),
-                icon: Icons.arrow_right_alt,
-                onPress: (){
-                  print('${txtTaskController.text}');
-                  Navigator.pop(context, 'Cancel');
-                },
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
   Widget bodyContent() {
     return Column(
       children: [
@@ -93,7 +74,7 @@ class _HomeViewState extends State<HomeView> {
           onPress: onCreateNewTask,
         ),
         // list of tasks
-        BlocBuilder<BottomNavCubit, BottomNavState>(
+        BlocBuilder<TaskListCubit, TaskListState>(
           builder: (context, state) {
             return Container(
               height: 65.h,

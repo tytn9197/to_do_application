@@ -5,11 +5,9 @@ class BottomNavState extends Equatable {
   BottomNavItems items;
   //Bottom navigation index
   int index;
-  //list of Tasks
-  List<Task> tasks;
 
-  BottomNavState(this.items, this.index, this.tasks);
+  BottomNavState(this.items, this.index);
 
   @override
-  List<Object> get props => [items, index, tasks];
+  List<Object> get props => [items, index];
 }

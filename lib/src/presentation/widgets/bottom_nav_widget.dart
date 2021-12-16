@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:to_do_list/src/presentation/blocs/bottom_navigation/bottom_nav_cubit.dart';
 import 'package:to_do_list/src/presentation/blocs/bottom_navigation/constants/bottom_nav_items.dart';
+import 'package:to_do_list/src/presentation/blocs/task_list/task_list_cubit.dart';
 
 class BottomNavWidget extends StatelessWidget {
   BottomNavWidget({Key? key}) : super(key: key);
@@ -25,12 +26,18 @@ class BottomNavWidget extends StatelessWidget {
               if (index == 0) {
                 BlocProvider.of<BottomNavCubit>(context)
                     .setBottomNavItem(BottomNavItems.all);
+                BlocProvider.of<TaskListCubit>(context)
+                    .getAllTasks();
               } else if (index == 1) {
                 BlocProvider.of<BottomNavCubit>(context)
                     .setBottomNavItem(BottomNavItems.complete);
+                BlocProvider.of<TaskListCubit>(context)
+                    .getCompletedTask();
               } else if (index == 2) {
                 BlocProvider.of<BottomNavCubit>(context)
                     .setBottomNavItem(BottomNavItems.incomplete);
+                BlocProvider.of<TaskListCubit>(context)
+                    .getIncompletedTask();
               }
             },
           ),
