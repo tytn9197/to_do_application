@@ -4,7 +4,7 @@ With zero knowledge about Flutter, I challenged myself to study and finish this 
 
 This is a basic application to create a task and handle its statuses. Users can create new tasks and change statuses.
 
-![home screen](https://github.com/tytn9197/to_do_application/tree/main/assets/readme_images/to-do-app-home-screen.png?raw=true)
+![home screen](https://raw.githubusercontent.com/tytn9197/to_do_application/main/assets/readme_images/to-do-app-home-screen.png)
 
 ## Installation
 
