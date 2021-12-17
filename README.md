@@ -4,11 +4,30 @@ With zero knowledge about Flutter, I challenged myself to study and finish this 
 
 This is a basic application to create a task and handle its statuses. Users can create new tasks and change statuses.
 
+![home screen](https://github.com/tytn9197/to_do_application/tree/main/assets/readme_images/to-do-app-home-screen.png?raw=true)
+
 ## Installation
 
-Follow the [Flutter Installation Doc](https://docs.flutter.dev/get-started/install) to install set-up environment.
+#### STEP 1
+Follow the [Flutter Installation Doc](https://docs.flutter.dev/get-started/install) to install environment.
 
-### Libraries
+#### STEP 2
+Clone this project to your computer
+
+#### STEP 3
+Follow [this article](https://stackoverflow.com/questions/50548629/how-to-open-an-existing-flutter-project-in-android-studio) to import cloned project
+
+#### STEP 4
+Run project
+
+#### TESTING
+There are 2 testing files: 
+    ./test/bottom_nav_bloc_unit_test.dart
+    ./test/task_list_bloc_unit_test.dart
+
+Open these files and run main function. 
+
+## Libraries
 
 - [flutter_bloc](https://pub.dev/packages/flutter_bloc) to manage states.
 - [sizer](https://pub.dev/packages/sizer) to make a responsive application.
